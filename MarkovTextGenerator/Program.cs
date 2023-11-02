@@ -10,9 +10,9 @@ public class Program
 
         Console.WriteLine("Enter some text I can learn from (enter single ! to finish): ");
 
-        // LoadText("Sample.txt", chain);
-
-        while (true)
+        LoadText("billboard.txt", chain);
+        
+        /*while (true)
         {
 
             Console.Write("> ");
@@ -22,18 +22,20 @@ public class Program
                 break;
 
             chain.AddSentence(line);  // Let the chain process this string
-        }
+        }*/
 
         // Now let's update all the probabilities with the new data
         chain.UpdateProbabilities();
 
         // Okay now for the fun part
-        Console.WriteLine("Done learning!  Now give me a word and I'll tell you what comes next.");
+        Console.WriteLine("Done learning!  Now give me a word and I'll write a sentence based on that word.");
         Console.Write("> ");
 
         var word = Console.ReadLine() ?? string.Empty;
-        var nextWord = chain.GetNextWord(word);
-        Console.WriteLine("I predict the next word will be " + nextWord);
+        /*var nextWord = chain.GetNextWord(word);
+        Console.WriteLine("I predict the next word will be " + nextWord);*/
+        string sentence = chain.GenerateSentence(word);
+        Console.WriteLine(sentence);
     }
 
     static void LoadText(string filename, Chain chain)

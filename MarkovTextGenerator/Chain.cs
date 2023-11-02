@@ -1,4 +1,6 @@
-﻿namespace MarkovTextGenerator;
+﻿using System.Text.RegularExpressions;
+
+namespace MarkovTextGenerator;
 
 public class Chain
 {
@@ -31,14 +33,27 @@ public class Chain
     /// <param name="sentence"></param>
     public void AddSentence(string? sentence)
     {
-        // TODO: Break sentence up into word pairs
-        // TODO: Add each word pair to the chain by calling AddPair
-        // TODO: The last word of any sentence will be paired up with an empty string to show that it is the end of the sentence
+        Regex regex = new Regex(@"\s+");
+        List<string> split = new List<string>(regex.Split(sentence));
+
+        if (split.Count % 2 == 1)
+        {
+            split.Add(" ");
+        }
+
+        for (int i = 0; i < split.Count - 1; i++)
+        {
+            AddPair(split[i], split[i+1]);
+        }
+
+
     }
 
     // Adds a pair of words to the chain that will appear in order
     public void AddPair(string word, string word2)
     {
+        word = word.ToLower();
+        word2 = word2.ToLower();
         if (!Words.ContainsKey(word))
         {
             _sums.Add(word, 1);
@@ -81,11 +96,28 @@ public class Chain
         {
             List<Word> choices = Words[word];
             double test = _rand.NextDouble();
+            double total = 0;
+            if (choices.Count == 2)
+            {
+                if (test <= .5)
+                {
+                    return choices.First().ToString();
+                }
+                else
+                {
+                    return choices.Last().ToString();
+                }
+            }
+            foreach (var wordProb in choices)
+            {
+                total += wordProb.Probability;
+                if (total >= test)
+                    return wordProb.ToString();
+            }
 
-            Console.WriteLine("I picked the number " + test);
         }
 
-        return "idkbbq";
+        return " ";
     }
 
     /// <summary>
@@ -96,7 +128,16 @@ public class Chain
     /// <returns></returns>
     public string GenerateSentence(string startingWord)
     {
-        return "";
+        string sentence = $"{startingWord} ";
+        var word = GetNextWord(startingWord);
+        int count = 0;
+        while (word != " ")
+        {
+            sentence += word + " ";
+            word = GetNextWord(word);
+        }
+        
+        return sentence;
     }
 
     /// <summary>
