@@ -10,7 +10,7 @@ public class Program
 
         Console.WriteLine("Enter some text I can learn from (enter single ! to finish): ");
 
-        LoadText("billboard.txt", chain);
+        LoadText("sample.txt", chain);
         
         /*while (true)
         {
@@ -29,13 +29,22 @@ public class Program
 
         // Okay now for the fun part
         Console.WriteLine("Done learning!  Now give me a word and I'll write a sentence based on that word.");
-        Console.Write("> ");
 
-        var word = Console.ReadLine() ?? string.Empty;
-        /*var nextWord = chain.GetNextWord(word);
-        Console.WriteLine("I predict the next word will be " + nextWord);*/
-        string sentence = chain.GenerateSentence(word);
-        Console.WriteLine(sentence);
+        while (true)
+        {
+            Console.Write("> ");
+
+            var word = Console.ReadLine() ?? string.Empty;
+
+            if (word == "done")
+                break;
+
+            /*var nextWord = chain.GetNextWord(word);
+            Console.WriteLine("I predict the next word will be " + nextWord);*/
+            string sentence = chain.GenerateSentence(word);
+            Console.WriteLine(sentence);
+        }
+
     }
 
     static void LoadText(string filename, Chain chain)

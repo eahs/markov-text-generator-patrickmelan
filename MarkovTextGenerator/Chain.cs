@@ -125,7 +125,7 @@ public class Chain
     /// startingWord.
     /// </summary>
     /// <param name="startingWord"></param>
-    /// <returns></returns>
+    /// <returns></returns> 
     public string GenerateSentence(string startingWord)
     {
         string sentence = $"{startingWord} ";
@@ -137,7 +137,7 @@ public class Chain
             word = GetNextWord(word);
         }
         
-        return sentence;
+        return sentence.TrimEnd();
     }
 
     /// <summary>
